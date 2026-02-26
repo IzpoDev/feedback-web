@@ -1,0 +1,46 @@
+<div class="feedback-container">
+  <h1>Envía tu Feedback</h1>
+  
+  <div class="form-group">
+    <label for="feedback-message">Tu mensaje:</label>
+    <textarea
+      id="feedback-message"
+      [(ngModel)]="message"
+      placeholder="Escribe tu comentario o feedback aquí..."
+      rows="6"
+      [disabled]="loading()"
+    ></textarea>
+  </div>
+
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+    </div>
+  }
+
+  @if (recommendations().length > 0) {
+    <div class="recommendations">
+      <h2>Recomendaciones:</h2>
+      @for (recommendation of recommendations(); track $index) {
+        <div class="recommendation-item">
+          @for (key of Object.keys(recommendation); track key) {
+            <p><strong>{{ key }}:</strong> {{ recommendation[key] }}</p>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <button 
+    type="button"
+    (click)="submitFeedback()"
+    [disabled]="loading()"
+    class="submit-button"
+  >
+    @if (loading()) {
+      <span>Analizando feedback...</span>
+    } @else {
+      <span>Enviar Feedback</span>
+    }
+  </button>
+</div>
