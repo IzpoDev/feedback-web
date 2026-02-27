@@ -16,6 +16,6 @@ export const routes: Routes = [
   { 
     // Comodín para rutas no encontradas siempre al final para evitar incoherencias con rutas válidas
     path: '**', 
-    redirectTo: '' 
+    redirectTo: 'login' 
   }
 ];
