@@ -4,8 +4,8 @@ import { FeedbackService, type RecommendationItem } from '../../services/feedbac
 @Component({
   selector: 'app-feedback',
   imports: [FormsModule],
-  templateUrl: './feedback.component.html',
-  styleUrl: './feedback.component.css',
+  templateUrl: './feedback.html',
+  styleUrl: './feedback.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedbackComponent {
