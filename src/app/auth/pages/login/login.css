@@ -73,7 +73,7 @@
 .forgot-password {
   font-size: 13px;
   color: #666666;
-  text-align: right;
+  text-align: center;
   margin-top: -0.5rem;
 }
 
@@ -85,6 +85,25 @@
 }
 
 .forgot-password .link:hover {
+  text-decoration: underline;
+  color: #004e92;
+}
+/*Registrar owner*/
+.register-owner {
+  font-size: 13px;
+  color: #666666;
+  text-align: center;
+  margin-top: -0.5rem;
+}
+
+.register-owner .link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.register-owner .link:hover {
   text-decoration: underline;
   color: #004e92;
 }
