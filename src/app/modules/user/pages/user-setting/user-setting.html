@@ -1,0 +1,89 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <button class="btn-back" (click)="goBack()" title="Volver al dashboard">
+      ← Volver
+    </button>
+    <h1 class="settings-title">Mi Perfil</h1>
+  </div>
+
+  <div class="settings-content">
+    <!-- Sección de Edición de Perfil -->
+    <section class="settings-section">
+      <h2 class="section-title">Información Personal</h2>
+      
+      @if (errorMessage()) {
+        <div class="alert-error">{{ errorMessage() }}</div>
+      }
+
+      @if (successMessage()) {
+        <div class="alert-success">{{ successMessage() }}</div>
+      }
+
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <div class="form-group">
+          <label for="username">Nombre de Usuario</label>
+          <input 
+            id="username" 
+            type="text" 
+            formControlName="username" 
+            placeholder="Tu nombre de usuario"
+            [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
+          >
+          @if (profileForm.get('username')?.invalid && profileForm.get('username')?.touched) {
+            <span class="error-text">El nombre de usuario es requerido y debe tener al menos 3 caracteres.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Correo Electrónico</label>
+          <input 
+            id="email" 
+            type="email" 
+            formControlName="email" 
+            placeholder="tu@correo.com"
+            [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+          >
+          @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+            <span class="error-text">Ingresa un correo electrónico válido.</span>
+          }
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span>Guardando cambios...</span>
+          } @else {
+            <span>Guardar Cambios</span>
+          }
+        </button>
+      </form>
+    </section>
+
+    <!-- Sección de Peligro - Eliminar Cuenta -->
+    <section class="settings-section danger-section">
+      <h2 class="section-title danger-title">Zona de Peligro</h2>
+      <p class="danger-description">La eliminación de tu cuenta es permanente y no se puede deshacer.</p>
+      
+      @if (!showDeleteConfirm()) {
+        <button class="btn-danger" (click)="toggleDeleteConfirm()">
+          Eliminar Mi Cuenta
+        </button>
+      } @else {
+        <div class="delete-confirmation">
+          <p class="confirm-text">¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.</p>
+          <div class="confirm-buttons">
+            <button class="btn-cancel" (click)="toggleDeleteConfirm()" [disabled]="isDeleting()">
+              Cancelar
+            </button>
+            <button class="btn-confirm-delete" (click)="deleteAccount()" [disabled]="isDeleting()">
+              @if (isDeleting()) {
+                <span>Eliminando...</span>
+              } @else {
+                <span>Sí, Eliminar Mi Cuenta</span>
+              }
+            </button>
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+</div>
