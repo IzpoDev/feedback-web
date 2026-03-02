@@ -17,10 +17,13 @@ export class DashboardComponent implements OnInit {
 
   username = signal('');
   userId = signal<number | null>(null);
+  userRole = signal<string>('');
   feedbacks = signal<FeedbackResponse[]>([]);
   loading = signal(false);
   error = signal('');
   userMenuOpen = signal(false);
+  editingFeedbackId = signal<number | null>(null);
+  deletingFeedbackId = signal<number | null>(null);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -35,7 +38,12 @@ export class DashboardComponent implements OnInit {
       const user = JSON.parse(userStr);
       this.username.set(user.username || 'Usuario');
       this.userId.set(user.id);
+      this.userRole.set(user.role || '');
     }
+  }
+
+  isAdmin(): boolean {
+    return this.userRole() === 'ADMIN';
   }
 
   loadFeedbacks(): void {
@@ -72,6 +80,34 @@ export class DashboardComponent implements OnInit {
 
   toggleUserMenu(): void {
     this.userMenuOpen.update(prev => !prev);
+  }
+
+  editFeedback(feedbackId: number): void {
+    this.editingFeedbackId.set(feedbackId);
+  }
+
+  deleteFeedback(feedbackId: number): void {
+    if (this.deletingFeedbackId() === feedbackId) {
+      // Confirmar eliminación
+      this.deletingFeedbackId.set(-1);
+      this.feedbackService.deleteFeedback(feedbackId).subscribe({
+        next: () => {
+          this.feedbacks.update(items => items.filter(f => f.id !== feedbackId));
+          this.deletingFeedbackId.set(null);
+        },
+        error: (err) => {
+          this.deletingFeedbackId.set(null);
+          this.error.set('Error al eliminar el feedback.');
+          console.error('Error deleting feedback:', err);
+        }
+      });
+    } else {
+      this.deletingFeedbackId.set(feedbackId);
+    }
+  }
+
+  cancelDelete(): void {
+    this.deletingFeedbackId.set(null);
   }
 
   logout(): void {

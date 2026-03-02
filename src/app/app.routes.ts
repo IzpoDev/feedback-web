@@ -33,6 +33,11 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/user/pages/register-admin/register-admin').then(c => c.RegisterAdmin),
     canActivate: [adminGuard]
   },
+  {
+    path: 'admin-users-list',
+    loadComponent: () => import('./modules/user/pages/admin-users-list/admin-users-list').then(c => c.AdminUsersList),
+    canActivate: [adminGuard]
+  },
   // Rutas protegidas (solo si está logueado)
   {
     path: 'dashboard',

@@ -9,6 +9,9 @@
         </button>
         @if (userMenuOpen()) {
           <div class="dropdown-menu">
+            @if (isAdmin()) {
+              <a routerLink="/admin-users-list" class="dropdown-item admin-item" (click)="toggleUserMenu()">📋 Gestionar Usuarios</a>
+            }
             <a routerLink="/user-setting" class="dropdown-item" (click)="toggleUserMenu()">Mi Perfil</a>
             <button class="dropdown-item logout-item" (click)="logout()">Cerrar Sesión</button>
           </div>
@@ -46,7 +49,42 @@
         <div class="feedback-list">
           @for (feedback of feedbacks(); track feedback.id) {
             <div class="feedback-item">
-              <p class="feedback-content">{{ feedback.content }}</p>
+              <div class="feedback-header">
+                <p class="feedback-content">{{ feedback.content }}</p>
+                @if (isAdmin()) {
+                  <div class="feedback-actions">
+                    <button 
+                      class="btn-icon edit-btn" 
+                      (click)="editFeedback(feedback.id)"
+                      title="Editar feedback"
+                      [disabled]="editingFeedbackId() !== null"
+                    >
+                      ✏️
+                    </button>
+                    <button 
+                      [class.confirming]="deletingFeedbackId() === feedback.id"
+                      class="btn-icon delete-btn" 
+                      (click)="deleteFeedback(feedback.id)"
+                      [title]="deletingFeedbackId() === feedback.id ? 'Confirmar eliminación' : 'Eliminar feedback'"
+                    >
+                      @if (deletingFeedbackId() === feedback.id) {
+                        <span>✓</span>
+                      } @else {
+                        <span>🗑️</span>
+                      }
+                    </button>
+                    @if (deletingFeedbackId() === feedback.id) {
+                      <button 
+                        class="btn-icon cancel-btn" 
+                        (click)="cancelDelete()"
+                        title="Cancelar eliminación"
+                      >
+                        ✕
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
               <span class="feedback-date">{{ formatDate(feedback.createdAt) }}</span>
             </div>
           }
