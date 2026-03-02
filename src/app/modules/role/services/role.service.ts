@@ -2,7 +2,7 @@ import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { env } from "../../../env/env";
-import { RoleRequest, RoleResponse } from "../interface/role.interface";
+import { RoleRequest, RoleResponse } from "../interfaces/role.interface";
 
 @Injectable({
     providedIn: 'root'

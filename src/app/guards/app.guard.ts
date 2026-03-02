@@ -42,3 +42,23 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
 
   return true;
 };
+
+export const adminGuard : CanActivateFn = (route, state) => {
+    const router = inject(Router);
+    const platformId = inject(PLATFORM_ID);
+
+    if(!isPlatformBrowser(platformId)) {
+      return true;
+    }
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    if (token && user) {
+        const userObj = JSON.parse(user);
+        if (userObj.role === 'ADMIN') {
+            return true;
+        }
+    }
+    router.navigate(['/feedback']);
+    return false;
+}

@@ -1,12 +1,12 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FeedbackService } from '../../services/feedback.service';
 import { FeedbackResponse } from '../../interfaces/feedback.interface';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   feedbacks = signal<FeedbackResponse[]>([]);
   loading = signal(false);
   error = signal('');
+  userMenuOpen = signal(false);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -67,6 +68,10 @@ export class DashboardComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  toggleUserMenu(): void {
+    this.userMenuOpen.update(prev => !prev);
   }
 
   logout(): void {
