@@ -5,22 +5,22 @@ export const routes: Routes = [
   // Ruta pública por defecto - Feedback anónimo
   { 
     path: '', 
-    loadComponent: () => import('./feedback/pages/feedback/feedback').then(c => c.FeedbackComponent)
+    loadComponent: () => import('./modules/feedback/pages/feedback/feedback').then(c => c.FeedbackComponent)
   },
   // Rutas de autenticación (solo si NO está logueado)
   { 
     path: 'login', 
-    loadComponent: () => import('./auth/pages/login/login').then(c => c.Login),
+    loadComponent: () => import('./modules/auth/pages/login/login').then(c => c.Login),
     canActivate: [noAuthGuard]
   },
   {
     path: 'forgot-password',
-    loadComponent: () => import('./auth/pages/forgot-password/forgot-password').then(c => c.ForgotPassword),
+    loadComponent: () => import('./modules/auth/pages/forgot-password/forgot-password').then(c => c.ForgotPassword),
     canActivate: [noAuthGuard]
   },
   {
     path: 'register-owner',
-    loadComponent: () => import('./user/pages/register-owner/register-owner').then(c => c.RegisterOwnerComponent),
+    loadComponent: () => import('./modules/user/pages/register-owner/register-owner').then(c => c.RegisterOwnerComponent),
     canActivate: [noAuthGuard]
   },
   // Rutas protegidas (solo si está logueado)
