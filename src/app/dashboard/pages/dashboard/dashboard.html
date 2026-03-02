@@ -1,0 +1,47 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1 class="dashboard-title">Feedback-App</h1>
+    <div class="user-info">
+      <span class="user-name">Hola, {{ username() }}</span>
+      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    <div class="stats-card">
+      <div class="stat-item">
+        <div class="stat-number">{{ feedbacks().length }}</div>
+        <div class="stat-label">Feedbacks Recibidos</div>
+      </div>
+    </div>
+
+    <section class="feedbacks-section">
+      <h2 class="section-title">Mis Feedbacks</h2>
+
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+
+      @if (loading()) {
+        <div class="loading-state">
+          <p>Cargando feedbacks...</p>
+        </div>
+      } @else if (feedbacks().length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p class="empty-text">Aún no tienes feedbacks</p>
+          <p class="empty-subtext">Comparte tu enlace para recibir comentarios anónimos</p>
+        </div>
+      } @else {
+        <div class="feedback-list">
+          @for (feedback of feedbacks(); track feedback.id) {
+            <div class="feedback-item">
+              <p class="feedback-content">{{ feedback.content }}</p>
+              <span class="feedback-date">{{ formatDate(feedback.createdAt) }}</span>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div>
