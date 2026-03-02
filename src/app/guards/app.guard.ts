@@ -52,7 +52,7 @@ export const adminGuard : CanActivateFn = (route, state) => {
     }
     const user = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-
+// Solo permitir acceso si el usuario es ADMIN
     if (token && user) {
         const userObj = JSON.parse(user);
         if (userObj.role === 'ADMIN') {

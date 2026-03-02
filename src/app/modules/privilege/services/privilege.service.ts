@@ -1,3 +1,4 @@
+// src/app/modules/privilege/services/privilege.service.ts
 import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
