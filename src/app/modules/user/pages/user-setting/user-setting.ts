@@ -104,7 +104,7 @@ export class UserSetting implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
-        this.router.navigate(['/register-owner']);
+        this.router.navigate(['']);
       },
       error: (err) => {
         this.isDeleting.set(false);
