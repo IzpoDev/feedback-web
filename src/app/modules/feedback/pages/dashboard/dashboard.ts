@@ -1,10 +1,6 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-<<<<<<< HEAD
-import { Router } from '@angular/router';
-=======
 import { Router, RouterLink } from '@angular/router';
->>>>>>> 4eb01620688946dd2e8abf002516c5528f475740
 import { FeedbackService } from '../../services/feedback.service';
 import { FeedbackResponse } from '../../interfaces/feedback.interface';
 
