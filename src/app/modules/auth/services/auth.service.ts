@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { env } from '../../env/env';
+import { env } from '../../../env/env';
 import { LoginRequest,LoginResponse } from '../interfaces/login.interface';
 import { ForgotPasswordRequest, ForgotPasswordResponse } from '../interfaces/forgot-password.interface';
 

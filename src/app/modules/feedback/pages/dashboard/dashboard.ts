@@ -1,8 +1,8 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { FeedbackService } from '../../../feedback/services/feedback.service';
-import { FeedbackResponse } from '../../../feedback/interfaces/feedback.interface';
+import { FeedbackService } from '../../services/feedback.service';
+import { FeedbackResponse } from '../../interfaces/feedback.interface';
 
 @Component({
   selector: 'app-dashboard',
