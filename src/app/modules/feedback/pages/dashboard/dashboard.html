@@ -2,8 +2,18 @@
   <header class="dashboard-header">
     <h1 class="dashboard-title">Feedback-App</h1>
     <div class="user-info">
-      <span class="user-name">Hola, {{ username() }}</span>
-      <button class="btn-logout" (click)="logout()">Cerrar Sesión</button>
+      <div class="user-dropdown">
+        <button class="user-dropdown-toggle" (click)="toggleUserMenu()">
+          <span class="user-name">{{ username() }}</span>
+          <span class="dropdown-icon" [class.open]="userMenuOpen()">▼</span>
+        </button>
+        @if (userMenuOpen()) {
+          <div class="dropdown-menu">
+            <a routerLink="/user-setting" class="dropdown-item" (click)="toggleUserMenu()">Mi Perfil</a>
+            <button class="dropdown-item logout-item" (click)="logout()">Cerrar Sesión</button>
+          </div>
+        }
+      </div>
     </div>
   </header>
 
