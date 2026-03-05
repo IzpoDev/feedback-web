@@ -18,6 +18,7 @@ export class UserSetting implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
 
   user = signal<UserResponse | null>(null);
+  token = signal<string | null>(null);
   isLoading = signal(false);
   isDeleting = signal(false);
   errorMessage = signal('');
@@ -66,10 +67,14 @@ export class UserSetting implements OnInit {
 
       this.userService.updateUser(userId, request).subscribe({
         next: (response) => {
+          
           this.isLoading.set(false);
-          this.user.set(response);
+          this.user.set(response.user);
+          this.token.set(response.token);
+
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('user', JSON.stringify(response));
+            localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('token', response.token);
           }
           this.successMessage.set('¡Perfil actualizado exitosamente!');
           setTimeout(() => this.successMessage.set(''), 3000);

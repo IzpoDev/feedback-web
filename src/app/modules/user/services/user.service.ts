@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { env } from '../../../env/env';
 import { UserRequest, UserResponse } from '../interfaces/user.interface';
+import { LoginResponse } from '../../auth/interfaces/login.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +25,8 @@ export class UserService {
   getAllActive() : Observable<UserResponse[]> {
     return this.http.get<UserResponse[]>(`${this.apiUtl}/active`);
   }
-  updateUser(id: number, request : UserRequest) : Observable<UserResponse> {
-    return this.http.put<UserResponse>(`${this.apiUtl}/${id}`, request);
+  updateUser(id: number, request : UserRequest) : Observable<LoginResponse> {
+    return this.http.put<LoginResponse>(`${this.apiUtl}/${id}`, request);
   }
   deleteUser(id:number) : Observable<UserResponse> {
     return this.http.delete<UserResponse>(`${this.apiUtl}/${id}`);
