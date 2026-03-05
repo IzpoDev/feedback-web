@@ -54,6 +54,7 @@ export class UserSetting implements OnInit {
       this.successMessage.set('');
 
       const userId = this.user()?.id;
+
       if (!userId) {
         this.errorMessage.set('Error: No se encontró el ID del usuario.');
         this.isLoading.set(false);
@@ -61,6 +62,7 @@ export class UserSetting implements OnInit {
       }
 
       const request: UserRequest = this.profileForm.getRawValue();
+      request.password = "sinDefinir"; // No se actualiza la contraseña aquí
 
       this.userService.updateUser(userId, request).subscribe({
         next: (response) => {
@@ -78,6 +80,7 @@ export class UserSetting implements OnInit {
           console.error('Update user error:', err);
         }
       });
+      
     } else {
       this.profileForm.markAllAsTouched();
     }
