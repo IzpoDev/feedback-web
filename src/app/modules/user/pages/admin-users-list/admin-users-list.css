@@ -1,5 +1,6 @@
-/*src/app/modules/user/pages/admin-users-list/admin-users-list.css */
+@import '../../../../app.css';
 
+/* Admin Users List específico */
 .admin-container {
   min-height: 100vh;
   background-color: #f4f7f6;
@@ -12,26 +13,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.btn-back {
-  background-color: #e9ecef;
-  color: #333333;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-}
-
-.btn-back:hover {
-  background-color: #dee2e6;
-}
-
-.btn-back:active {
-  transform: scale(0.98);
 }
 
 .admin-title {
@@ -49,38 +30,6 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 78, 146, 0.08);
   padding: 2rem;
-}
-
-.loading-state {
-  text-align: center;
-  padding: 3rem;
-  color: #666666;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #666666;
-}
-
-.empty-icon {
-  font-size: 48px;
-  margin-bottom: 1rem;
-}
-
-.empty-text {
-  font-size: 16px;
-  margin-bottom: 0.5rem;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 1rem;
 }
 
 .users-table-wrapper {
