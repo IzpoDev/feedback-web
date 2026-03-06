@@ -3,7 +3,7 @@ import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { env } from "../../../env/env";
-import { PrivilegeRequest, PrivilegeResponse } from "../interfaces/privilege.interface";
+import { PrivilegeRequest, PrivilegeResponse, RolePrivilegeResponse } from "../interfaces/privilege.interface";
 
 @Injectable({
     providedIn: 'root',
@@ -18,6 +18,9 @@ export class PrivilegeService {
     getAllPrivileges() : Observable<PrivilegeResponse[]> {
         return this.http.get<PrivilegeResponse[]>(this.apiUrl);
     }
+    getAllPrivilegesWithRoles() : Observable<RolePrivilegeResponse[]>{
+        return this.http.get<RolePrivilegeResponse[]>(`${this.apiUrl}/roles-privileges`);
+    }
     getPrivilegeById(id : number) : Observable<PrivilegeResponse> {
         return this.http.get<PrivilegeResponse>(`${this.apiUrl}/${id}`);
     }
@@ -25,12 +28,12 @@ export class PrivilegeService {
         return this.http.put<PrivilegeResponse>(`${this.apiUrl}/${id}`, request);
     }
     deletePrivilege(id:number) : Observable<string> {
-        return this.http.delete<string>(`${this.apiUrl}/${id}`);
+        return this.http.delete(`${this.apiUrl}/${id}`, { responseType: 'text' });
     }
     assignPrivilegeToRole(roleId: number, privilegeId : number) : Observable<string> {
-        return this.http.post<string>(`${this.apiUrl}/role/${roleId}/privilege/${privilegeId}`, {});
+        return this.http.post(`${this.apiUrl}/role/${roleId}/privilege/${privilegeId}`, {}, { responseType: 'text' });
     }
     removePrivilegeFromRole(roleId: number, privilegeId : number) : Observable<string> {
-        return this.http.delete<string>(`${this.apiUrl}/role/${roleId}/privilege/${privilegeId}`);
+        return this.http.delete(`${this.apiUrl}/role/${roleId}/privilege/${privilegeId}`, { responseType: 'text' });
     }
 }

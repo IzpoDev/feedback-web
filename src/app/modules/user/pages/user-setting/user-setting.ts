@@ -1,13 +1,13 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { UserRequest, UserResponse } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-user-setting',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-setting.html',
   styleUrl: './user-setting.css',
 })
@@ -18,6 +18,7 @@ export class UserSetting implements OnInit {
   private readonly platformId = inject(PLATFORM_ID);
 
   user = signal<UserResponse | null>(null);
+  token = signal<string | null>(null);
   isLoading = signal(false);
   isDeleting = signal(false);
   errorMessage = signal('');
@@ -54,6 +55,7 @@ export class UserSetting implements OnInit {
       this.successMessage.set('');
 
       const userId = this.user()?.id;
+
       if (!userId) {
         this.errorMessage.set('Error: No se encontró el ID del usuario.');
         this.isLoading.set(false);
@@ -61,13 +63,19 @@ export class UserSetting implements OnInit {
       }
 
       const request: UserRequest = this.profileForm.getRawValue();
+      request.password = "sinDefinir"; // No se actualiza la contraseña aquí
 
       this.userService.updateUser(userId, request).subscribe({
         next: (response) => {
+          
           this.isLoading.set(false);
-          this.user.set(response);
+          this.user.set(response.user);
+          this.token.set(response.token);
+
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem('user', JSON.stringify(response));
+            localStorage.setItem('user', JSON.stringify(response.user));
+            localStorage.setItem('token', response.token);
+            console.log('User data updated in localStorage:', response.user);
           }
           this.successMessage.set('¡Perfil actualizado exitosamente!');
           setTimeout(() => this.successMessage.set(''), 3000);
@@ -78,6 +86,7 @@ export class UserSetting implements OnInit {
           console.error('Update user error:', err);
         }
       });
+      
     } else {
       this.profileForm.markAllAsTouched();
     }
@@ -104,7 +113,7 @@ export class UserSetting implements OnInit {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
-        this.router.navigate(['/register-owner']);
+        this.router.navigate(['']);
       },
       error: (err) => {
         this.isDeleting.set(false);

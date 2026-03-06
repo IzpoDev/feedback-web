@@ -33,11 +33,26 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/user/pages/register-admin/register-admin').then(c => c.RegisterAdmin),
     canActivate: [adminGuard]
   },
+  {
+    path: 'admin-users-list',
+    loadComponent: () => import('./modules/user/pages/admin-users-list/admin-users-list').then(c => c.AdminUsersList),
+    canActivate: [adminGuard]
+  },
   // Rutas protegidas (solo si está logueado)
   {
     path: 'dashboard',
     loadComponent: () => import('./modules/feedback/pages/dashboard/dashboard').then(c => c.DashboardComponent),
     canActivate: [authGuard]
+  },
+  {
+    path: 'admin-roles-list',
+    loadComponent: () => import('./modules/role/pages/list-roles/list-roles').then(c => c.ListRoles),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'admin-privileges-list',
+    loadComponent: () => import('./modules/privilege/pages/list-privileges/list-privileges').then(c => c.ListPrivileges),
+    canActivate: [adminGuard]
   },
   // Comodín para rutas no encontradas - redirige a feedback público
   { 

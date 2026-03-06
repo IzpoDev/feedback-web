@@ -1,0 +1,203 @@
+@import '../../../../app.css';
+
+/* Matching Privilege Role */
+.matching-container {
+  padding: 0;
+}
+
+.section-title {
+  color: #004e92;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.card-title {
+  color: #333333;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.assign-form-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.assign-form {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.assign-form .form-group {
+  flex: 1;
+  min-width: 180px;
+}
+
+.assign-form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.assign-form select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.assign-btn {
+  min-width: 120px;
+  height: 44px;
+}
+
+.relations-section {
+  margin-top: 1rem;
+}
+
+.relations-table-wrapper {
+  overflow-x: auto;
+}
+
+.relations-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.relations-table thead {
+  background-color: #f4f7f6;
+}
+
+.relations-table th {
+  padding: 1rem;
+  text-align: left;
+  color: #333333;
+  font-weight: 700;
+  border-bottom: 2px solid #004e92;
+  font-size: 14px;
+}
+
+.relations-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #333333;
+  font-size: 14px;
+}
+
+.relations-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.relations-table tbody tr.deleting {
+  background-color: #fff5f5;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.role-badge {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.privilege-badge {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 32px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action:hover:not(:disabled) {
+  background-color: #f4f7f6;
+  border-color: #007bff;
+}
+
+.delete-btn {
+  color: #dc3545;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #fff5f5;
+  border-color: #dc3545;
+}
+
+.delete-btn.confirming {
+  background-color: #dc3545;
+  color: #ffffff;
+  border-color: #dc3545;
+}
+
+.cancel-btn {
+  color: #6c757d;
+}
+
+.cancel-btn:hover {
+  background-color: #e9ecef;
+  border-color: #6c757d;
+}
+
+.empty-state.small {
+  padding: 2rem;
+}
+
+.empty-state.small .empty-text {
+  font-size: 16px;
+}
+
+.empty-state.small .empty-subtext {
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .assign-form {
+    flex-direction: column;
+  }
+
+  .assign-form .form-group {
+    width: 100%;
+  }
+
+  .assign-btn {
+    width: 100%;
+  }
+
+  .relations-table th,
+  .relations-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}

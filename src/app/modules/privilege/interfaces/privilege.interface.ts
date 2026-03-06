@@ -8,3 +8,8 @@ export interface PrivilegeResponse {
     name: string;
     description: string;
 }
+export interface RolePrivilegeResponse {
+    rolePrivilegeId: number;
+    roleName: string;
+    privilegeName: string
+}
