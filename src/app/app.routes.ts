@@ -44,6 +44,16 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/feedback/pages/dashboard/dashboard').then(c => c.DashboardComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'admin-roles-list',
+    loadComponent: () => import('./modules/role/pages/list-roles/list-roles').then(c => c.ListRoles),
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'admin-privileges-list',
+    loadComponent: () => import('./modules/privilege/pages/list-privileges/list-privileges').then(c => c.ListPrivileges),
+    canActivate: [adminGuard]
+  },
   // Comodín para rutas no encontradas - redirige a feedback público
   { 
     path: '**', 

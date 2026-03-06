@@ -1,0 +1,127 @@
+@if (isVisible()) {
+  <div class="matching-container">
+    <h2 class="section-title">Asignar Privilegios a Roles</h2>
+
+    @if (error()) {
+      <div class="alert-error">{{ error() }}</div>
+    }
+
+    @if (success()) {
+      <div class="alert-success">{{ success() }}</div>
+    }
+
+    @if (loading()) {
+      <div class="loading-state">
+        <p>Cargando datos...</p>
+      </div>
+    } @else {
+      <!-- Formulario de Asignación -->
+      <div class="assign-form-card">
+        <h3 class="card-title">Nueva Asignación</h3>
+        <div class="assign-form">
+          <div class="form-group">
+            <label for="role-select">Rol</label>
+            <select 
+              id="role-select" 
+              [value]="selectedRoleId() ?? ''" 
+              (change)="onRoleChange($event)"
+            >
+              <option value="">Selecciona un rol</option>
+              @for (role of roles(); track role.id) {
+                <option [value]="role.id">{{ role.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="privilege-select">Privilegio</label>
+            <select 
+              id="privilege-select" 
+              [value]="selectedPrivilegeId() ?? ''" 
+              (change)="onPrivilegeChange($event)"
+            >
+              <option value="">Selecciona un privilegio</option>
+              @for (privilege of privileges(); track privilege.id) {
+                <option [value]="privilege.id">{{ privilege.name }}</option>
+              }
+            </select>
+          </div>
+
+          <button 
+            class="btn-primary assign-btn" 
+            (click)="assignPrivilege()" 
+            [disabled]="isAssigning() || !selectedRoleId() || !selectedPrivilegeId()"
+          >
+            @if (isAssigning()) {
+              <span>Asignando...</span>
+            } @else {
+              <span>🔗 Asignar</span>
+            }
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista de Relaciones -->
+      <div class="relations-section">
+        <h3 class="card-title">Relaciones Actuales</h3>
+        @if (relations().length === 0) {
+          <div class="empty-state small">
+            <p class="empty-text">No hay relaciones configuradas</p>
+            <p class="empty-subtext">Asigna un privilegio a un rol para comenzar</p>
+          </div>
+        } @else {
+          <div class="relations-table-wrapper">
+            <table class="relations-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Rol</th>
+                  <th>Privilegio</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (relation of relations(); track relation.rolePrivilegeId) {
+                  <tr [class.deleting]="isDeleting(relation.rolePrivilegeId)">
+                    <td data-label="ID">{{ relation.rolePrivilegeId }}</td>
+                    <td data-label="Rol">
+                      <span class="badge role-badge">{{ relation.roleName }}</span>
+                    </td>
+                    <td data-label="Privilegio">
+                      <span class="badge privilege-badge">{{ relation.privilegeName }}</span>
+                    </td>
+                    <td data-label="Acciones">
+                      <div class="action-buttons">
+                        <button 
+                          [class.confirming]="isDeleting(relation.rolePrivilegeId)"
+                          class="btn-action delete-btn" 
+                          (click)="removeRelation(relation)"
+                          [title]="isDeleting(relation.rolePrivilegeId) ? 'Confirmar eliminación' : 'Remover relación'"
+                        >
+                          @if (isDeleting(relation.rolePrivilegeId)) {
+                            <span>✓</span>
+                          } @else {
+                            <span>🗑️</span>
+                          }
+                        </button>
+                        @if (isDeleting(relation.rolePrivilegeId)) {
+                          <button 
+                            class="btn-action cancel-btn" 
+                            (click)="cancelRemove()"
+                            title="Cancelar"
+                          >
+                            ✕
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    }
+  </div>
+}

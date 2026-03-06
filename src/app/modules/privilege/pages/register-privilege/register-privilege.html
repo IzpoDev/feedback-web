@@ -1,0 +1,61 @@
+@if (isOpen()) {
+  <div class="modal-overlay" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Nuevo Privilegio</h2>
+        <button class="modal-close" (click)="close()">✕</button>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="modal-form">
+        @if (error()) {
+          <div class="alert-error">{{ error() }}</div>
+        }
+
+        @if (success()) {
+          <div class="alert-success">{{ success() }}</div>
+        }
+
+        <div class="form-group">
+          <label for="register-name">Nombre del Privilegio</label>
+          <input 
+            id="register-name" 
+            type="text" 
+            formControlName="name" 
+            placeholder="Ej: CREATE_USER, DELETE_FEEDBACK"
+            [class.is-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched"
+          >
+          @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+            <span class="error-text">El nombre es requerido (mín. 2 caracteres).</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="register-description">Descripción</label>
+          <textarea 
+            id="register-description" 
+            formControlName="description" 
+            placeholder="Descripción del nuevo privilegio..."
+            rows="3"
+            [class.is-invalid]="registerForm.get('description')?.invalid && registerForm.get('description')?.touched"
+          ></textarea>
+          @if (registerForm.get('description')?.invalid && registerForm.get('description')?.touched) {
+            <span class="error-text">La descripción es requerida (mín. 5 caracteres).</span>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="close()" [disabled]="isCreating()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="isCreating()">
+            @if (isCreating()) {
+              <span>Creando...</span>
+            } @else {
+              <span>Crear Privilegio</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -11,6 +11,8 @@
           <div class="dropdown-menu">
             @if (isAdmin()) {
               <a routerLink="/admin-users-list" class="dropdown-item admin-item" (click)="toggleUserMenu()">📋 Gestionar Usuarios</a>
+              <a routerLink="/admin-roles-list" class="dropdown-item admin-item" (click)="toggleUserMenu()">🔑 Gestionar Roles</a>
+              <a routerLink="/admin-privileges-list" class="dropdown-item admin-item" (click)="toggleUserMenu()">🛡️ Gestionar Privilegios</a>
             }
             <a routerLink="/user-setting" class="dropdown-item" (click)="toggleUserMenu()">Mi Perfil</a>
             <button class="dropdown-item logout-item" (click)="logout()">Cerrar Sesión</button>
@@ -55,9 +57,8 @@
                   <div class="feedback-actions">
                     <button 
                       class="btn-icon edit-btn" 
-                      (click)="editFeedback(feedback.id)"
+                      (click)="editFeedback(feedback)"
                       title="Editar feedback"
-                      [disabled]="editingFeedbackId() !== null"
                     >
                       ✏️
                     </button>
@@ -93,3 +94,52 @@
     </section>
   </main>
 </div>
+
+<!-- Modal de Edición de Feedback -->
+@if (showEditModal()) {
+  <div class="modal-overlay" (click)="closeEditModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Editar Feedback</h2>
+        <button class="modal-close" (click)="closeEditModal()">✕</button>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()" class="modal-form">
+        @if (editError()) {
+          <div class="alert-error">{{ editError() }}</div>
+        }
+
+        @if (editSuccess()) {
+          <div class="alert-success">{{ editSuccess() }}</div>
+        }
+
+        <div class="form-group">
+          <label for="edit-content">Contenido del Feedback</label>
+          <textarea 
+            id="edit-content" 
+            formControlName="content" 
+            placeholder="Escribe el contenido del feedback..."
+            rows="5"
+            [class.is-invalid]="editForm.get('content')?.invalid && editForm.get('content')?.touched"
+          ></textarea>
+          @if (editForm.get('content')?.invalid && editForm.get('content')?.touched) {
+            <span class="error-text">El contenido es requerido (mín. 5 caracteres).</span>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()" [disabled]="isUpdating()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="isUpdating()">
+            @if (isUpdating()) {
+              <span>Guardando...</span>
+            } @else {
+              <span>Guardar Cambios</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -1,0 +1,181 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <button class="btn-back" (click)="goBack()" title="Volver al dashboard">
+      ← Volver
+    </button>
+    <h1 class="admin-title">Gestión de Privilegios</h1>
+    <div class="header-actions">
+      <button 
+        class="btn-secondary" 
+        [class.active]="currentView() === 'list'"
+        (click)="switchToList()"
+      >
+        📜 Lista
+      </button>
+      <button 
+        class="btn-secondary" 
+        [class.active]="currentView() === 'matching'"
+        (click)="switchToMatching()"
+      >
+        🔗 Asignar a Roles
+      </button>
+      @if (currentView() === 'list') {
+        <button class="btn-primary btn-add" (click)="openRegisterModal()">
+          + Nuevo Privilegio
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="admin-content">
+    @if (error()) {
+      <div class="alert-error">{{ error() }}</div>
+    }
+
+    <!-- Vista de Lista de Privilegios -->
+    @if (currentView() === 'list') {
+      @if (loading()) {
+        <div class="loading-state">
+          <p>Cargando privilegios...</p>
+        </div>
+      } @else if (privileges().length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">🛡️</div>
+          <p class="empty-text">No hay privilegios registrados</p>
+          <p class="empty-subtext">Crea un nuevo privilegio para comenzar</p>
+        </div>
+      } @else {
+        <div class="privileges-table-wrapper">
+          <table class="privileges-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (privilege of privileges(); track privilege.id) {
+                <tr [class.deleting]="deletingPrivilegeId() === privilege.id">
+                  <td data-label="ID">{{ privilege.id }}</td>
+                  <td data-label="Nombre">
+                    <span class="badge privilege-badge">{{ privilege.name }}</span>
+                  </td>
+                  <td data-label="Descripción">{{ privilege.description }}</td>
+                  <td data-label="Acciones">
+                    <div class="action-buttons">
+                      <button 
+                        class="btn-action edit-btn"
+                        title="Editar privilegio"
+                        (click)="openEditModal(privilege)"
+                      >
+                        ✏️
+                      </button>
+                      <button 
+                        [class.confirming]="deletingPrivilegeId() === privilege.id"
+                        class="btn-action delete-btn" 
+                        (click)="deletePrivilege(privilege.id)"
+                        [title]="deletingPrivilegeId() === privilege.id ? 'Confirmar eliminación' : 'Eliminar privilegio'"
+                      >
+                        @if (deletingPrivilegeId() === privilege.id) {
+                          <span>✓</span>
+                        } @else {
+                          <span>🗑️</span>
+                        }
+                      </button>
+                      @if (deletingPrivilegeId() === privilege.id) {
+                        <button 
+                          class="btn-action cancel-btn" 
+                          (click)="cancelDelete()"
+                          title="Cancelar"
+                        >
+                          ✕
+                        </button>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+
+    <!-- Vista de Matching Privilegios-Roles -->
+    @if (currentView() === 'matching') {
+      <app-matching-privilege-role [isVisible]="currentView() === 'matching'" />
+    }
+  </div>
+</div>
+
+<!-- Modal de Edición de Privilegio -->
+@if (showEditModal()) {
+  <div class="modal-overlay" (click)="closeEditModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Editar Privilegio</h2>
+        <button class="modal-close" (click)="closeEditModal()">✕</button>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()" class="modal-form">
+        @if (editError()) {
+          <div class="alert-error">{{ editError() }}</div>
+        }
+
+        @if (editSuccess()) {
+          <div class="alert-success">{{ editSuccess() }}</div>
+        }
+
+        <div class="form-group">
+          <label for="edit-name">Nombre del Privilegio</label>
+          <input 
+            id="edit-name" 
+            type="text" 
+            formControlName="name" 
+            placeholder="Ej: READ_USERS, WRITE_FEEDBACK"
+            [class.is-invalid]="editForm.get('name')?.invalid && editForm.get('name')?.touched"
+          >
+          @if (editForm.get('name')?.invalid && editForm.get('name')?.touched) {
+            <span class="error-text">El nombre es requerido (mín. 2 caracteres).</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="edit-description">Descripción</label>
+          <textarea 
+            id="edit-description" 
+            formControlName="description" 
+            placeholder="Descripción del privilegio..."
+            rows="3"
+            [class.is-invalid]="editForm.get('description')?.invalid && editForm.get('description')?.touched"
+          ></textarea>
+          @if (editForm.get('description')?.invalid && editForm.get('description')?.touched) {
+            <span class="error-text">La descripción es requerida (mín. 5 caracteres).</span>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()" [disabled]="isUpdating()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-primary" [disabled]="isUpdating()">
+            @if (isUpdating()) {
+              <span>Guardando...</span>
+            } @else {
+              <span>Guardar Cambios</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- Modal de Registro de Privilegio (Componente Externo) -->
+<app-register-privilege 
+  [isOpen]="showRegisterModal()" 
+  (privilegeCreated)="onPrivilegeCreated($event)" 
+  (closed)="closeRegisterModal()"
+/>
