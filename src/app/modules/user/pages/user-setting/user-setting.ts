@@ -1,13 +1,13 @@
 import { Component, inject, signal, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { UserRequest, UserResponse } from '../../interfaces/user.interface';
 
 @Component({
   selector: 'app-user-setting',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-setting.html',
   styleUrl: './user-setting.css',
 })
@@ -75,6 +75,7 @@ export class UserSetting implements OnInit {
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('token', response.token);
+            console.log('User data updated in localStorage:', response.user);
           }
           this.successMessage.set('¡Perfil actualizado exitosamente!');
           setTimeout(() => this.successMessage.set(''), 3000);
