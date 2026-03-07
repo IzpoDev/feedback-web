@@ -6,26 +6,6 @@
 
     <div class="feedback-form">
       <div class="form-group">
-        <label for="owner">¿A quién deseas enviar tu feedback?</label>
-        @if (loadingOwners()) {
-          <select id="owner" disabled class="loading-select">
-            <option>Cargando...</option>
-          </select>
-        } @else {
-          <select 
-            id="owner" 
-            (change)="onOwnerChange($event)"
-            [class.is-invalid]="error() && !selectedOwnerId()"
-          >
-            <option value="">Selecciona un destinatario</option>
-            @for (owner of owners(); track owner.id) {
-              <option [value]="owner.id">{{ owner.username }}</option>
-            }
-          </select>
-        }
-      </div>
-
-      <div class="form-group">
         <label for="message">Tu mensaje:</label>
         <textarea
           id="message"
@@ -48,7 +28,7 @@
       <button 
         type="button"
         (click)="submitFeedback()"
-        [disabled]="loading() || loadingOwners()"
+        [disabled]="loading()"
         class="btn-primary"
       >
         @if (loading()) {
@@ -65,4 +45,3 @@
     </div>
   </div>
 </div>
-

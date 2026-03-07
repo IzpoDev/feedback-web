@@ -4,7 +4,7 @@ import { authGuard, noAuthGuard, adminGuard } from './guards/app.guard';
 export const routes: Routes = [
   // Ruta pública por defecto - Feedback anónimo
   { 
-    path: '', 
+    path: 'feedback/:id', 
     loadComponent: () => import('./modules/feedback/pages/feedback/feedback').then(c => c.FeedbackComponent)
   },
   // Rutas de autenticación (solo si NO está logueado)
@@ -53,6 +53,11 @@ export const routes: Routes = [
     path: 'admin-privileges-list',
     loadComponent: () => import('./modules/privilege/pages/list-privileges/list-privileges').then(c => c.ListPrivileges),
     canActivate: [adminGuard]
+  },
+  {
+    path : '',
+    redirectTo : 'login',
+    pathMatch : 'full'
   },
   // Comodín para rutas no encontradas - redirige a feedback público
   { 
