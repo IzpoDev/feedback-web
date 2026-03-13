@@ -27,6 +27,9 @@ export class DashboardComponent implements OnInit {
   editingFeedbackId = signal<number | null>(null);
   deletingFeedbackId = signal<number | null>(null);
 
+  feedbackUrl = signal('');
+  linkCopied = signal(false);
+
   // Modal de edición de feedback
   showEditModal = signal(false);
   editingFeedback = signal<FeedbackResponse | null>(null);
@@ -52,6 +55,7 @@ export class DashboardComponent implements OnInit {
       this.username.set(user.username || 'Usuario');
       this.userId.set(user.id);
       this.userRole.set(user.role || '');
+      this.feedbackUrl.set(`${window.location.origin}/feedback/${user.id}`);
     }
   }
 
@@ -117,6 +121,11 @@ export class DashboardComponent implements OnInit {
     this.editError.set('');
     this.editSuccess.set('');
   }
+  copyFeedbackLink(): void {
+  navigator.clipboard.writeText(this.feedbackUrl());
+  this.linkCopied.set(true);
+  setTimeout(() => this.linkCopied.set(false), 2000);
+}
 
   onEditSubmit(): void {
     if (this.editForm.valid) {

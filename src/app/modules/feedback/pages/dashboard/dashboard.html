@@ -30,6 +30,18 @@
       </div>
     </div>
 
+    <!-- Sección para compartir link de feedback -->
+    <section class="share-link-section">
+      <h3 class="section-title">Tu enlace de feedback</h3>
+      <div class="link-container">
+        <input type="text" [value]="feedbackUrl()" readonly class="link-input">
+        <button (click)="copyFeedbackLink()" class="btn-copy">
+          {{ linkCopied() ? '✓ Copiado' : '📋 Copiar' }}
+        </button>
+      </div>
+      <p class="link-hint">Comparte este enlace para recibir feedback anónimo</p>
+    </section>
+
     <section class="feedbacks-section">
       <h2 class="section-title">Mis Feedbacks</h2>
 
