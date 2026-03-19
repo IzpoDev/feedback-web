@@ -7,10 +7,64 @@
   </div>
 
   <div class="settings-content">
+
+    <!-- Sección de Foto de Perfil -->
+    <section class="settings-section avatar-section-card">
+      <h2 class="section-title">Foto de Perfil</h2>
+
+      <div class="avatar-section">
+        <div class="avatar-wrapper">
+          @if (previewUrl()) {
+            <img [src]="previewUrl()" alt="Vista previa" class="avatar-img" />
+          } @else if (user()?.profilePictureUrl) {
+            <img [src]="user()!.profilePictureUrl" [alt]="user()!.username" class="avatar-img" />
+          } @else {
+            <div class="avatar-placeholder">
+              <span class="avatar-initials">{{ user()?.username?.charAt(0)?.toUpperCase() || '?' }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (uploadImageError()) {
+        <div class="alert-error">{{ uploadImageError() }}</div>
+      }
+      @if (uploadImageSuccess()) {
+        <div class="alert-success">{{ uploadImageSuccess() }}</div>
+      }
+
+      <div class="file-upload-area">
+        <label for="profileImage" class="file-upload-label">
+          <span class="upload-icon">📁</span>
+          <span>{{ selectedFile() ? selectedFile()!.name : 'Seleccionar imagen...' }}</span>
+        </label>
+        <input
+          id="profileImage"
+          type="file"
+          accept="image/*"
+          class="file-input-hidden"
+          (change)="onFileSelected($event)"
+        />
+        <p class="file-hint">Archivos de imagen, máximo {{ MAX_FILE_SIZE_MB }} MB</p>
+      </div>
+
+      <button
+        class="btn-upload"
+        (click)="onUploadImage()"
+        [disabled]="!selectedFile() || isUploadingImage()"
+      >
+        @if (isUploadingImage()) {
+          <span>Subiendo...</span>
+        } @else {
+          <span>Subir Imagen</span>
+        }
+      </button>
+    </section>
+
     <!-- Sección de Edición de Perfil -->
     <section class="settings-section">
       <h2 class="section-title">Información Personal</h2>
-      
+
       @if (errorMessage()) {
         <div class="alert-error">{{ errorMessage() }}</div>
       }
@@ -22,10 +76,10 @@
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
         <div class="form-group">
           <label for="username">Nombre de Usuario</label>
-          <input 
-            id="username" 
-            type="text" 
-            formControlName="username" 
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
             placeholder="Tu nombre de usuario"
             [class.is-invalid]="profileForm.get('username')?.invalid && profileForm.get('username')?.touched"
           >
@@ -36,10 +90,10 @@
 
         <div class="form-group">
           <label for="email">Correo Electrónico</label>
-          <input 
-            id="email" 
-            type="email" 
-            formControlName="email" 
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
             placeholder="tu@correo.com"
             [class.is-invalid]="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
           >
@@ -62,7 +116,7 @@
     <section class="settings-section danger-section">
       <h2 class="section-title danger-title">Eliminacion de Cuenta</h2>
       <p class="danger-description">Por alguna razon no quieres continuar puedes dar clic aqui.</p>
-      
+
       @if (!showDeleteConfirm()) {
         <button class="btn-danger" (click)="toggleDeleteConfirm()">
           Eliminar Mi Cuenta

@@ -26,6 +26,7 @@
         <table class="users-table">
           <thead>
             <tr>
+              <th>Avatar</th>
               <th>ID</th>
               <th>Usuario</th>
               <th>Email</th>
@@ -36,6 +37,15 @@
           <tbody>
             @for (user of users(); track user.id) {
               <tr [class.deleting]="deletingUserId() === user.id">
+                <td data-label="Avatar">
+                @if (user.profilePictureUrl) {
+                    <img [src]="user.profilePictureUrl" [alt]="user.username" class="user-avatar" />
+                  } @else {
+                    <div class="user-avatar-placeholder">
+                      <span>{{ user.username.charAt(0).toUpperCase() }}</span>
+                    </div>
+                  }
+                </td>
                 <td data-label="ID">{{ user.id }}</td>
                 <td data-label="Usuario">{{ user.username }}</td>
                 <td data-label="Email">{{ user.email }}</td>

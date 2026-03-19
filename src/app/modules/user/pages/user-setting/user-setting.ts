@@ -25,6 +25,15 @@ export class UserSetting implements OnInit {
   successMessage = signal('');
   showDeleteConfirm = signal(false);
 
+  // Image upload
+  selectedFile = signal<File | null>(null);
+  previewUrl = signal<string | null>(null);
+  isUploadingImage = signal(false);
+  uploadImageError = signal('');
+  uploadImageSuccess = signal('');
+
+  readonly MAX_FILE_SIZE_MB = 50;
+
   profileForm: FormGroup = this.fb.nonNullable.group({
     username: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
@@ -48,6 +57,67 @@ export class UserSetting implements OnInit {
     }
   }
 
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    const maxBytes = this.MAX_FILE_SIZE_MB * 1024 * 1024;
+
+    this.uploadImageError.set('');
+    this.uploadImageSuccess.set('');
+
+    if (file.size > maxBytes) {
+      this.uploadImageError.set(`El archivo supera el límite de ${this.MAX_FILE_SIZE_MB} MB.`);
+      this.selectedFile.set(null);
+      this.previewUrl.set(null);
+      input.value = '';
+      return;
+    }
+
+    this.selectedFile.set(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewUrl.set(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onUploadImage(): void {
+    const file = this.selectedFile();
+    const userId = this.user()?.id;
+
+    if (!file || !userId) return;
+
+    this.isUploadingImage.set(true);
+    this.uploadImageError.set('');
+    this.uploadImageSuccess.set('');
+
+    this.userService.uploadImage(userId, file).subscribe({
+      next: (updatedUser) => {
+        this.isUploadingImage.set(false);
+        this.user.set(updatedUser);
+        this.selectedFile.set(null);
+        this.previewUrl.set(null);
+
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+
+        this.uploadImageSuccess.set('¡Foto de perfil actualizada exitosamente!');
+        setTimeout(() => this.uploadImageSuccess.set(''), 4000);
+      },
+      error: (err) => {
+        this.isUploadingImage.set(false);
+        this.uploadImageError.set(
+          err.error?.message || 'Error al subir la imagen. Por favor, intenta nuevamente.'
+        );
+        console.error('Upload image error:', err);
+      }
+    });
+  }
+
   onSubmit(): void {
     if (this.profileForm.valid) {
       this.isLoading.set(true);
@@ -63,11 +133,10 @@ export class UserSetting implements OnInit {
       }
 
       const request: UserRequest = this.profileForm.getRawValue();
-      request.password = "sinDefinir"; // No se actualiza la contraseña aquí
+      request.password = 'sinDefinir';
 
       this.userService.updateUser(userId, request).subscribe({
         next: (response) => {
-          
           this.isLoading.set(false);
           this.user.set(response.user);
           this.token.set(response.token);
@@ -75,18 +144,19 @@ export class UserSetting implements OnInit {
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('user', JSON.stringify(response.user));
             localStorage.setItem('token', response.token);
-            console.log('User data updated in localStorage:', response.user);
           }
           this.successMessage.set('¡Perfil actualizado exitosamente!');
           setTimeout(() => this.successMessage.set(''), 3000);
         },
         error: (err) => {
           this.isLoading.set(false);
-          this.errorMessage.set(err.error?.message || 'Error al actualizar el perfil. Por favor, intenta nuevamente.');
+          this.errorMessage.set(
+            err.error?.message || 'Error al actualizar el perfil. Por favor, intenta nuevamente.'
+          );
           console.error('Update user error:', err);
         }
       });
-      
+
     } else {
       this.profileForm.markAllAsTouched();
     }
@@ -117,7 +187,9 @@ export class UserSetting implements OnInit {
       },
       error: (err) => {
         this.isDeleting.set(false);
-        this.errorMessage.set(err.error?.message || 'Error al eliminar la cuenta. Por favor, intenta nuevamente.');
+        this.errorMessage.set(
+          err.error?.message || 'Error al eliminar la cuenta. Por favor, intenta nuevamente.'
+        );
         console.error('Delete user error:', err);
       }
     });
