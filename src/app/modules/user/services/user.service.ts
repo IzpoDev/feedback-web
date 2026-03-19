@@ -36,7 +36,7 @@ export class UserService {
   }
   uploadImage(id: number, file: File): Observable<UserResponse> {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('profilePicture', file);
     return this.http.put<UserResponse>(`${this.apiUtl}/${id}/profile-picture`, formData);
   }
 }
