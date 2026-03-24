@@ -1,22 +1,60 @@
-# 📋 Feedbackweb - Sistema de Gestión de Feedback Anónimo
+﻿# 📋 Feedbackweb v1.2
 
-**Feedbackweb** es una aplicación web moderna de gestión de feedback anónimo construida con **Angular 21**. Permite a usuarios enviar comentarios anónimos y a administradores gestionar usuarios, roles, privilegios y dashboards de análisis.
+> **Sistema de Gestión de Feedback Anónimo** — Aplicación web moderna construida con **Angular 21**
+
+[![Angular](https://img.shields.io/badge/Angular-21.1.0-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.12-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Firebase](https://img.shields.io/badge/Firebase_Hosting-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com)
+[![RxJS](https://img.shields.io/badge/RxJS-7.8.0-B7178C?style=for-the-badge&logo=reactivex&logoColor=white)](https://rxjs.dev)
 
 ---
 
-## 📊 Stack de Frontend
+## ✨ Descripción
 
-| Tecnología | Versión | Descripción |
-|---|---|---|
-| **Angular** | ^21.1.0 | Framework principal con componentes standalone |
-| **TypeScript** | ~5.9.2 | Lenguaje de programación con tipado estático |
-| **Angular Router** | ^21.1.0 | Enrutamiento y navegación |
-| **Angular Forms** | ^21.1.0 | Gestión de formularios |
-| **RxJS** | ~7.8.0 | Programación reactiva y manejo de observables |
-| **Angular SSR** | ^21.1.2 | Server-Side Rendering (SSR) con Express |
-| **Tailwind CSS** | ^4.1.12 | Utilidades CSS para estilos |
-| **PostCSS** | ^8.5.3 | Procesamiento de CSS avanzado |
-| **Vitest** | ^4.0.8 | Framework de testing unitario |
+**Feedbackweb** permite a usuarios enviar comentarios anónimos y a administradores gestionar usuarios, roles, privilegios y dashboards de análisis en tiempo real.
+
+🌐 **Demo en Producción:** [https://feedback-web-d776c.web.app](https://feedback-web-d776c.web.app)
+
+---
+
+## 🛠️ Stack Tecnológico
+
+### Core Framework
+
+| Tecnología | Versión | Rol |
+|:---:|:---:|---|
+| ![Angular](https://img.shields.io/badge/-Angular-DD0031?logo=angular&logoColor=white) | **^21.1.0** | Framework principal con componentes standalone |
+| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white) | **~5.9.2** | Tipado estático y desarrollo robusto |
+| ![RxJS](https://img.shields.io/badge/-RxJS-B7178C?logo=reactivex&logoColor=white) | **~7.8.0** | Programación reactiva con Observables |
+
+### Estilos y UI
+
+| Tecnología | Versión | Rol |
+|:---:|:---:|---|
+| ![Tailwind](https://img.shields.io/badge/-Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white) | **^4.1.12** | Framework de utilidades CSS |
+| ![PostCSS](https://img.shields.io/badge/-PostCSS-DD3A0A?logo=postcss&logoColor=white) | **^8.5.3** | Procesamiento avanzado de CSS |
+
+### Renderizado y Server
+
+| Tecnología | Versión | Rol |
+|:---:|:---:|---|
+| ![Angular SSR](https://img.shields.io/badge/-Angular_SSR-DD0031?logo=angular&logoColor=white) | **^21.1.2** | Server-Side Rendering |
+| ![Express](https://img.shields.io/badge/-Express-000000?logo=express&logoColor=white) | **^5.1.0** | Servidor Node.js para SSR |
+
+### Testing y Desarrollo
+
+| Tecnología | Versión | Rol |
+|:---:|:---:|---|
+| ![Vitest](https://img.shields.io/badge/-Vitest-6E9F18?logo=vitest&logoColor=white) | **^4.0.8** | Testing unitario ultrarrápido |
+| ![Angular CLI](https://img.shields.io/badge/-Angular_CLI-DD0031?logo=angular&logoColor=white) | **^21.1.2** | Herramientas de desarrollo |
+
+### Deployment
+
+| Tecnología | Rol |
+|:---:|---|
+| ![Firebase](https://img.shields.io/badge/-Firebase_Hosting-FFCA28?logo=firebase&logoColor=black) | Hosting con CDN global |
+| ![GitHub Actions](https://img.shields.io/badge/-GitHub_Actions-2088FF?logo=githubactions&logoColor=white) | CI/CD automático |
 
 ---
 
@@ -24,400 +62,204 @@
 
 ### Estructura Modular
 
-El proyecto está organizado en **módulos funcionales independientes** siguiendo la arquitectura recomendada de Angular 21:
+Organización en **módulos funcionales independientes** siguiendo las mejores prácticas de Angular 21:
 
 ```
 src/app/
 ├── modules/
-│   ├── auth/                    # Autenticación y autorización
-│   │   ├── interfaces/          # Modelos de datos (LoginInterface, ForgotPasswordInterface)
+│   ├── auth/                    # 🔐 Autenticación
+│   │   ├── interfaces/          # LoginInterface, ForgotPasswordInterface
 │   │   ├── pages/
-│   │   │   ├── login/          # Página de inicio de sesión
+│   │   │   ├── login/           # Inicio de sesión
 │   │   │   └── forgot-password/ # Recuperación de contraseña
-│   │   └── services/           # AuthService para llamadas API
+│   │   └── services/            # AuthService
 │   │
-│   ├── feedback/                # Sistema principal de feedback
+│   ├── feedback/                # 💬 Sistema de Feedback
 │   │   ├── interfaces/          # FeedbackInterface
 │   │   ├── pages/
-│   │   │   ├── feedback/        # Formulario anónimo de feedback (ruta pública)
-│   │   │   └── dashboard/       # Dashboard analytics (ruta protegida)
-│   │   └── services/           # FeedbackService
+│   │   │   ├── feedback/        # Formulario público con rutas dinámicas /:id
+│   │   │   └── dashboard/       # Analytics (protegido)
+│   │   └── services/            # FeedbackService
 │   │
-│   ├── user/                    # Gestión de usuarios
+│   ├── user/                    # 👥 Gestión de Usuarios
 │   │   ├── interfaces/          # UserInterface
 │   │   ├── pages/
-│   │   │   ├── admin-users-list/    # Listado de usuarios (solo admin)
-│   │   │   ├── register-admin/      # Registro de administradores
-│   │   │   ├── register-owner/      # Registro de propietarios
-│   │   │   └── user-setting/        # Configuración de usuario
-│   │   └── services/           # UserService
+│   │   │   ├── admin-users-list/    # Listado (solo admin)
+│   │   │   ├── register-admin/      # Registro de admins
+│   │   │   ├── register-owner/      # Registro de owners
+│   │   │   └── user-setting/        # Configuración personal
+│   │   └── services/            # UserService
 │   │
-│   ├── role/                    # Gestión de roles
+│   ├── role/                    # 🎭 Gestión de Roles
 │   │   ├── interfaces/          # RoleInterface
 │   │   ├── pages/
 │   │   │   ├── list-roles/      # Listado de roles
-│   │   │   └── register-role/   # Crear/editar roles
-│   │   └── services/           # RoleService
+│   │   │   └── register-role/   # CRUD de roles
+│   │   └── services/            # RoleService
 │   │
-│   └── privilege/               # Gestión de privilegios
+│   └── privilege/               # 🔑 Gestión de Privilegios
 │       ├── interfaces/          # PrivilegeInterface
 │       ├── pages/
-│       │   ├── list-privileges/         # Listado de privilegios
-│       │   ├── register-privilege/      # Crear/editar privilegios
-│       │   └── matching-privilege-role/ # Asignar privilegios a roles
-│       └── services/           # PrivilegeService
+│       │   ├── list-privileges/         # Listado
+│       │   ├── register-privilege/      # CRUD
+│       │   └── matching-privilege-role/ # Asignación rol-privilegio
+│       └── services/            # PrivilegeService
 │
-├── guards/                      # Route Guards para control de acceso
-│   └── app.guard.ts            # authGuard, noAuthGuard, adminGuard
+├── guards/                      # 🛡️ Route Guards
+│   └── app.guard.ts             # authGuard, noAuthGuard, adminGuard
 │
-├── interceptor/                 # HTTP Interceptors
-│   └── auth.interceptor.ts      # Manejo de tokens y errores HTTP
+├── interceptor/                 # 🔗 HTTP Interceptors
+│   └── auth.interceptor.ts      # JWT y manejo de errores
 │
-├── env/                         # Variables de configuración
-│   └── env.ts                   # URLs de API (local/producción)
+├── env/                         # ⚙️ Configuración
+│   └── env.ts                   # Variables de entorno
 │
-└── app.routes.ts                # Definición de todas las rutas
+└── app.routes.ts                # 🗺️ Definición de rutas
 ```
 
-### Características Principales
+---
 
-✅ **Componentes Standalone** - Arquitectura moderna sin NgModules  
-✅ **Lazy Loading** - Carga de módulos bajo demanda  
-✅ **Route Guards** - Control de acceso basado en roles (Auth, NoAuth, Admin)  
-✅ **HTTP Interceptor** - Manejo centralizado de autenticación y errores  
-✅ **Servicios Reactivos** - Uso de RxJS y Observables  
-✅ **Formularios Reactivos** - Validación y manejo de datos  
-✅ **Server-Side Rendering (SSR)** - Soporte para renderizado en servidor  
-✅ **Gestión de Roles y Privilegios** - Control granular de acceso  
+## ✅ Características v1.2
+
+| Característica | Descripción |
+|---|---|
+| **Componentes Standalone** | Arquitectura moderna sin NgModules |
+| **Lazy Loading** | Carga de módulos bajo demanda |
+| **Route Guards** | Control de acceso: `authGuard`, `noAuthGuard`, `adminGuard` |
+| **HTTP Interceptor** | Manejo centralizado de JWT y errores |
+| **Rutas Dinámicas SSR** | Soporte para `/feedback/:id` con Server-Side Rendering |
+| **Formularios Reactivos** | Validación robusta con Angular Forms |
+| **Gestión RBAC** | Control granular de roles y privilegios |
+| **CI/CD Automático** | Deploy automático con GitHub Actions |
 
 ---
 
-## 🔐 Sistema de Autenticación y Autorización
+## 🔐 Sistema de Autenticación
 
-| Guard | Descripción | Uso |
-|---|---|---|
-| `authGuard` | Verifica si el usuario está autenticado | Rutas protegidas (dashboard, admin) |
-| `noAuthGuard` | Redirige si ya está autenticado | Login, forgot-password, registro |
-| `adminGuard` | Verifica permisos de administrador | Rutas administrativas |
-
----
-
-## 🌐 Integración Backend
-
-- **API Base:** `https://feedback-anonymous-excercise-1.onrender.com`
-- **Configuración:** `src/app/env/env.ts`
-- **Interceptor:** Manejo automático de tokens JWT y errores HTTP
+| Guard | Protege | Comportamiento |
+|:---:|---|---|
+| `authGuard` | Dashboard, Settings | Redirige a `/login` si no autenticado |
+| `noAuthGuard` | Login, Register | Redirige a `/dashboard` si ya autenticado |
+| `adminGuard` | Admin panels | Verifica rol `ADMIN` en localStorage |
 
 ---
 
 ## 🚀 Guía de Desarrollo
 
-### Instalación y Setup
+### Instalación
 
 ```bash
+# Clonar repositorio
+git clone https://github.com/IzpoDev/feedback-web.git
+
 # Instalar dependencias
 npm install
 
-# Iniciar servidor de desarrollo (puerto 4200)
+# Iniciar servidor de desarrollo
 npm start
 ```
 
-Una vez ejecutado, abre tu navegador en `http://localhost:4200/`. La aplicación se recargará automáticamente al editar cualquier archivo fuente.
+Abre `http://localhost:4200/` en tu navegador.
 
-### Generación de Componentes
-
-Usa Angular CLI para generar nuevos componentes:
+### Comandos Disponibles
 
 ```bash
-# Generar un nuevo componente standalone
+npm start          # Servidor de desarrollo (puerto 4200)
+npm run build      # Build de producción
+npm run watch      # Build en modo watch
+npm test           # Ejecutar tests con Vitest
+npm run serve:ssr:feedbackweb  # Servidor SSR
+```
+
+### Generación de Código
+
+```bash
 ng generate component nombre-componente --standalone
-
-# Generar un servicio
-ng generate service modules/nombre-modulo/services/nombre-servicio
-
-# Generar una interfaz
-ng generate interface modules/nombre-modulo/interfaces/nombre-interface
-```
-
-Para ver todas las opciones disponibles:
-
-```bash
-ng generate --help
-```
-
-### Testing
-
-Ejecutar pruebas unitarias con Vitest:
-
-```bash
-# Ejecutar tests una sola vez
-npm test
-
-# Ejecutar tests en modo watch (se ejecutan automáticamente al cambiar archivos)
-ng test --watch
+ng generate service modules/modulo/services/nombre-servicio
+ng generate interface modules/modulo/interfaces/nombre
 ```
 
 ---
 
-## 📦 Construcción para Producción
-
-### Build Optimizado
-
-Compila el proyecto para producción con optimizaciones de rendimiento:
+## 📦 Build y Producción
 
 ```bash
-# Compilar proyecto para producción
+# Compilar para producción
 npm run build
 ```
 
-Los artefactos compilados se guardan en el directorio `dist/feedbackweb/browser/`. Angular optimiza automáticamente:
-- Minificación de código
-- Tree-shaking de módulos no utilizados
-- Compresión de assets
-- Generación de source maps seguros
-
-### Build en Modo Watch
-
-Para desarrollo continuo sin necesidad de recompilar manualmente:
-
-```bash
-# Compilar en modo watch (se recompila automáticamente)
-npm run watch
-```
-
-### Server-Side Rendering
-
-Para servir la aplicación con SSR:
-
-```bash
-# Iniciar servidor SSR (puerto por defecto)
-npm run serve:ssr:feedbackweb
-```
+Artefactos generados en `dist/feedbackweb/browser/` con:
+- ✅ Minificación automática
+- ✅ Tree-shaking
+- ✅ Code splitting
+- ✅ Prerender de rutas estáticas
 
 ---
 
-## 🔧 Deployment en Firebase Hosting
+## 🔧 Deploy en Firebase
 
-### Despliegue Automático (Recomendado)
+### Despliegue Automático (CI/CD)
 
-Este proyecto está configurado con **CI/CD automático** mediante GitHub Actions:
-
-#### Workflows Configurados
-
-**1. Deploy on Merge a Main (Producción)**
-- Trigger: Push a la rama `main`
-- Archivo: `.github/workflows/firebase-hosting-merge.yml`
-- Comportamiento: Compila, prueba y despliega automáticamente a Firebase Hosting
-- Tiempo de ejecución: ~1-2 minutos
-
-**2. Deploy Preview on Pull Request (Preview)**
-- Trigger: Crear un Pull Request
-- Archivo: `.github/workflows/firebase-hosting-pull-request.yml`
-- Comportamiento: Crea una vista previa temporal para revisar cambios antes de mergear
-
-#### Despliegue Automático en Acción
+Push a `main` → GitHub Actions → Firebase Hosting
 
 ```bash
-# 1. Realiza cambios en tu código
-# 2. Haz commit y push a main
 git add .
-git commit -m "feat: descripción del cambio"
+git commit -m "feat: nueva funcionalidad"
 git push origin main
-
-# 3. GitHub Actions se ejecutará automáticamente
-# 4. Tu aplicación se desplegará en: https://feedback-web-d776c.web.app
+# ✅ Deploy automático en ~2 minutos
 ```
 
-**Ventajas del despliegue automático:**
-- ✅ Despliegue automático sin intervención manual
-- ✅ Construcción y pruebas automáticas antes de desplegar
-- ✅ Historial completo de despliegues en GitHub
-- ✅ Rollback fácil a versiones anteriores
-- ✅ Cero downtime en la aplicación
-
----
-
-### Despliegue Manual en Firebase Hosting
-
-Si prefieres mayor control manual, sigue estos pasos:
-
-#### Paso 1: Instalar Firebase CLI
+### Despliegue Manual
 
 ```bash
-# Instalar herramientas de Firebase globalmente
 npm install -g firebase-tools
-```
-
-#### Paso 2: Autenticarse en Firebase
-
-```bash
-# Inicia sesión con tu cuenta de Google
 firebase login
-```
-
-Se abrirá una ventana del navegador para autorizar acceso.
-
-#### Paso 3: Compilar para Producción
-
-```bash
-# Compila el proyecto optimizando para producción
 npm run build
-```
-
-Esto genera la carpeta `dist/feedbackweb/browser/` con todos los archivos estáticos optimizados para producción.
-
-#### Paso 4: Desplegar a Firebase Hosting
-
-```bash
-# Despliega la aplicación a Firebase Hosting (plan Spark)
-firebase deploy
-```
-
-**Resultado esperado:**
-- ✅ Tu aplicación estará disponible en: `https://feedback-web-d776c.web.app`
-- ✅ Puedes configurar tu propio dominio personalizado en Firebase Console
-- ✅ HTTPS automático y gratuito
-- ✅ CDN global para entrega rápida
-
-#### Paso 5: Verificar Despliegue
-
-```bash
-# Ver historial de todos los despliegues
-firebase hosting:channel:list
-
-# Ver logs en tiempo real de la aplicación
-firebase functions:log
-
-# Verificar estado actual del proyecto
-firebase status
-
-# Ver estadísticas de uso y tráfico
-firebase hosting:summary
-```
-
----
-
-## 📋 Checklist Completo Antes de Desplegar
-
-Antes de hacer cualquier despliegue, verifica:
-
-- [ ] **Dependencias:** Ejecutar `npm install` para instalar todas las dependencias
-- [ ] **Conectividad:** Verificar que la API backend esté accesible
-- [ ] **Build:** Compilar con `npm run build` sin errores
-- [ ] **Configuración:** Revisar que `firebase.json` apunte a `dist/feedbackweb/browser`
-- [ ] **Variables:** Confirmar que `env.ts` tiene la URL correcta de la API
-- [ ] **Tests:** Ejecutar `npm test` para validar integridad del código
-- [ ] **Git:** Hacer commit y push a `main` para despliegue automático (si aplica)
-- [ ] **Validación:** Probar la aplicación en `http://localhost:4200` antes de desplegar
-- [ ] **Assets:** Verificar que las imágenes y recursos estén en `public/`
-
----
-
-## 🐛 Solución de Problemas Comunes
-
-### Error: "firebase: command not found"
-
-```bash
-# Instalar globalmente
-npm install -g firebase-tools
-
-# Verificar instalación
-firebase --version
-
-# Iniciar sesión
-firebase login
-```
-
-### Error: "Page Not Found" en Firebase Hosting
-
-Verifica que `firebase.json` esté correctamente configurado:
-
-```json
-{
-  "hosting": {
-    "public": "dist/feedbackweb/browser",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
-```
-
-La clave es la ruta `public` que debe apuntar a `/browser`.
-
-### Error: CSS budget exceeded (8.66 kB)
-
-Si ves este error durante `npm run build`:
-
-```bash
-# Aumenta el presupuesto en angular.json
-```
-
-Edita `angular.json` y cambia:
-
-```json
-"budgets": [
-  {
-    "type": "anyComponentStyle",
-    "maximumError": "10kB"
-  }
-]
-```
-
-O mejor aún, optimiza el CSS eliminando duplicados y moviendo estilos globales a `app.css`.
-
-### Error: "Failed to authenticate" con Firebase CLI
-
-```bash
-firebase logout
-firebase login --reauth
 firebase deploy
 ```
 
 ---
 
-## 📊 Performance y Optimizaciones
+## 📊 Performance
 
-El proyecto implementa varias optimizaciones de rendimiento:
-
-- **Lazy Loading:** Los módulos se cargan bajo demanda
-- **Tree-shaking:** Se eliminan módulos no utilizados durante el build
-- **Code Splitting:** Separación automática de código para chunks optimizados
-- **Minificación:** Reducción automática de tamaño de archivos
-- **Compression:** Gzip automático en Firebase Hosting
-- **CDN Global:** Distribución rápida desde servidores cercanos
+- **Lazy Loading** — Módulos cargados bajo demanda
+- **Tree-shaking** — Eliminación de código no utilizado
+- **Code Splitting** — Chunks optimizados automáticamente
+- **CDN Global** — Firebase Hosting con edge caching
+- **Gzip** — Compresión automática
 
 ---
 
-## 📚 Recursos Adicionales
+## 📚 Recursos
 
-- [Documentación Oficial Angular 21](https://angular.dev)
-- [Firebase Hosting Documentation](https://firebase.google.com/docs/hosting)
-- [RxJS Official Documentation](https://rxjs.dev)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs)
-- [Angular Best Practices](https://angular.dev/guide/styleguide)
+- [Angular 21 Documentation](https://angular.dev)
+- [Firebase Hosting](https://firebase.google.com/docs/hosting)
+- [RxJS](https://rxjs.dev)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Vitest](https://vitest.dev)
 
 ---
 
 ## 📝 Información del Proyecto
 
-- **Framework:** Angular 21.1.2
-- **Lenguaje:** TypeScript 5.9.2
-- **Testing:** Vitest 4.0.8
-- **Hosting:** Firebase Hosting (Plan Spark)
-- **CI/CD:** GitHub Actions
-- **Backend API:** Render (Java 21 / Spring)
-- **Última actualización:** Marzo 2026
-- **Estado:** ✅ En Producción
+| | |
+|---|---|
+| **Versión** | 1.2 |
+| **Framework** | Angular 21.1.0 |
+| **Lenguaje** | TypeScript 5.9.2 |
+| **Estilos** | Tailwind CSS 4.1.12 |
+| **Testing** | Vitest 4.0.8 |
+| **Hosting** | Firebase Hosting |
+| **CI/CD** | GitHub Actions |
+| **Estado** | ✅ En Producción |
+| **Última actualización** | Marzo 2026 |
 
 ---
 
-**Desarrollado por:** @IzpoDev 
-**Repositorio:** IzpoDev/feedback-web  
-**Licencia:** Licencia Privada
-#   f e e d b a c k - w e b 
- 
- 
+<div align="center">
+
+**Desarrollado con 💻 por [@IzpoDev](https://github.com/IzpoDev)**
+
+[![GitHub](https://img.shields.io/badge/GitHub-IzpoDev%2Ffeedback--web-181717?style=flat-square&logo=github)](https://github.com/IzpoDev/feedback-web)
+
+</div>
