@@ -7,4 +7,5 @@ export interface FeedbackResponse {
     content : string;
     recipientId : number;
     createdAt : string;
+    active? : boolean;
 }

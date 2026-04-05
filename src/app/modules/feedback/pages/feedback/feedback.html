@@ -4,40 +4,135 @@
     <h2 class="feedback-subtitle">Envía tu Feedback Anónimo</h2>
     <p class="feedback-description">Tu opinión es importante. Comparte tu experiencia de forma anónima y ayuda a mejorar.</p>
 
-    <div class="feedback-form">
-      <div class="form-group">
-        <label for="message">Tu mensaje:</label>
-        <textarea
-          id="message"
-          [(ngModel)]="message"
-          placeholder="Escribe tu comentario o feedback aquí..."
-          rows="6"
-          [disabled]="loading()"
-          [class.is-invalid]="error() && !message().trim()"
-        ></textarea>
-      </div>
-
-      @if (error()) {
-        <div class="alert-error">{{ error() }}</div>
-      }
-
-      @if (success()) {
-        <div class="alert-success">{{ success() }}</div>
-      }
-
+    <!-- Botones para cambiar modo -->
+    <div class="mode-selector">
       <button 
-        type="button"
-        (click)="submitFeedback()"
+        class="mode-btn" 
+        [class.active]="sendMode() === 'text'"
+        (click)="switchMode('text')"
         [disabled]="loading()"
-        class="btn-primary"
       >
-        @if (loading()) {
-          <span>Enviando...</span>
-        } @else {
-          <span>Enviar Feedback</span>
-        }
+        📝 Escribir Feedback
+      </button>
+      <button 
+        class="mode-btn" 
+        [class.active]="sendMode() === 'audio'"
+        (click)="switchMode('audio')"
+        [disabled]="loading()"
+      >
+        🎤 Grabar Audio
       </button>
     </div>
+
+    <!-- Modo texto -->
+    @if (sendMode() === 'text') {
+      <div class="feedback-form">
+        <div class="form-group">
+          <label for="message">Tu mensaje:</label>
+          <textarea
+            id="message"
+            [(ngModel)]="message"
+            placeholder="Escribe tu comentario o feedback aquí..."
+            rows="6"
+            [disabled]="loading()"
+            [class.is-invalid]="error() && !message().trim()"
+          ></textarea>
+        </div>
+
+        @if (error()) {
+          <div class="alert-error">{{ error() }}</div>
+        }
+
+        @if (success()) {
+          <div class="alert-success">{{ success() }}</div>
+        }
+
+        <button 
+          type="button"
+          (click)="submitFeedback()"
+          [disabled]="loading()"
+          class="btn-primary"
+        >
+          @if (loading()) {
+            <span>Enviando...</span>
+          } @else {
+            <span>Enviar Feedback</span>
+          }
+        </button>
+      </div>
+    }
+
+    <!-- Modo audio -->
+    @if (sendMode() === 'audio') {
+      <div class="audio-form">
+        @if (!isRecording() && !audioBlob()) {
+          <div class="recording-guide">
+            <p>Presiona el botón para comenzar a grabar tu feedback</p>
+          </div>
+          <button 
+            type="button"
+            (click)="startRecording()"
+            [disabled]="loading()"
+            class="btn-record"
+          >
+            🎤 Grabar Audio
+          </button>
+        }
+
+        @if (isRecording()) {
+          <div class="recording-state">
+            <div class="recording-indicator">
+              <span class="blink">●</span>
+              <span class="recording-text">Grabando...</span>
+            </div>
+            <div class="recording-time">{{ formatTime(recordingTime()) }}</div>
+            <button 
+              type="button"
+              (click)="stopRecording()"
+              class="btn-stop"
+            >
+              ⏹ Detener Grabación
+            </button>
+          </div>
+        }
+
+        @if (!isRecording() && audioBlob()) {
+          <div class="recording-complete">
+            <p class="recording-saved">✓ Audio grabado: {{ formatTime(recordingTime()) }}</p>
+            <div class="audio-actions">
+              <button 
+                type="button"
+                (click)="cancelRecording()"
+                [disabled]="loading()"
+                class="btn-secondary"
+              >
+                🔄 Grabar de Nuevo
+              </button>
+              <button 
+                type="button"
+                (click)="submitFeedback()"
+                [disabled]="loading()"
+                class="btn-primary"
+              >
+                @if (loading()) {
+                  <span>Enviando...</span>
+                } @else {
+                  <span>✓ Enviar Audio</span>
+                }
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (error()) {
+          <div class="alert-error">{{ error() }}</div>
+        }
+
+        @if (success()) {
+          <div class="alert-success">{{ success() }}</div>
+        }
+      </div>
+    }
 
     <div class="login-link">
       <span>¿Eres dueño de un negocio? </span>
