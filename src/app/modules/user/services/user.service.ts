@@ -34,4 +34,9 @@ export class UserService {
   createAdmin(request: UserRequest) : Observable<UserResponse> {
     return this.http.post<UserResponse>(`${this.apiUtl}/admin`,request);
   }
+  uploadImage(id: number, file: File): Observable<UserResponse> {
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+    return this.http.put<UserResponse>(`${this.apiUtl}/${id}/profile-picture`, formData);
+  }
 }

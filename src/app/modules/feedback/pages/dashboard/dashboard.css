@@ -184,10 +184,34 @@
   border-radius: 8px;
   padding: 1.25rem;
   transition: box-shadow 0.2s ease;
+  position: relative;
 }
 
 .feedback-item:hover {
   box-shadow: 0 2px 8px rgba(0, 78, 146, 0.1);
+}
+
+.feedback-item.inactive {
+  background-color: #fff5f5;
+  border: 2px solid #dc3545;
+  opacity: 0.8;
+}
+
+.feedback-item.inactive:hover {
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15);
+}
+
+.deleted-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 1.25rem;
+  background-color: #dc3545;
+  color: #ffffff;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .feedback-header {
@@ -372,4 +396,41 @@
   font-size: 13px;
   color: #666;
   margin-top: 0.75rem;
+}
+
+/* Botones de acciones de feedback */
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background-color: rgba(0, 78, 146, 0.1);
+}
+
+.btn-icon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.delete-btn.confirming {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(0, 78, 146, 0.1);
 }

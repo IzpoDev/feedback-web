@@ -15,6 +15,12 @@ export class FeedbackService {
   sendFeedback(request : FeedbackRequest) : Observable<FeedbackResponse> {
     return this.http.post<FeedbackResponse>(this.apiUrl, request);
   }
+  sendFeedbackWithAudio( audio: File, recipientId: number) : Observable<FeedbackResponse> {
+    const formData = new FormData();
+    formData.append('audio', audio);
+    formData.append('recipient_id', recipientId.toString());
+    return this.http.post<FeedbackResponse>(`${this.apiUrl}/audio`, formData);
+  }
   // Este metodo es logueado tenemos que implementar un interceptor para agregar el token a las peticiones
   getAllFeedbacksOwners(id : number) : Observable<FeedbackResponse[]> {
     return this.http.get<FeedbackResponse[]>(`${this.apiUrl}/${id}`);

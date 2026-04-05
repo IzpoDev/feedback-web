@@ -62,7 +62,10 @@
       } @else {
         <div class="feedback-list">
           @for (feedback of feedbacks(); track feedback.id) {
-            <div class="feedback-item">
+            <div class="feedback-item" [class.inactive]="feedback.active === false">
+              @if (feedback.active === false) {
+                <div class="deleted-badge">🗑️ Eliminado</div>
+              }
               <div class="feedback-header">
                 <p class="feedback-content">{{ feedback.content }}</p>
                 @if (isAdmin()) {
@@ -71,6 +74,7 @@
                       class="btn-icon edit-btn" 
                       (click)="editFeedback(feedback)"
                       title="Editar feedback"
+                      [disabled]="feedback.active === false"
                     >
                       ✏️
                     </button>
@@ -79,6 +83,7 @@
                       class="btn-icon delete-btn" 
                       (click)="deleteFeedback(feedback.id)"
                       [title]="deletingFeedbackId() === feedback.id ? 'Confirmar eliminación' : 'Eliminar feedback'"
+                      [disabled]="feedback.active === false"
                     >
                       @if (deletingFeedbackId() === feedback.id) {
                         <span>✓</span>
